@@ -1,8 +1,32 @@
 import java.util.Scanner;
-import java.util.Deque;
-import java.util.ArrayDeque;
+
+class Node {
+    char data;
+    Node next;
+
+    Node(char data) {
+        this.data = data;
+        this.next = null;
+    }
+}
 
 public class PalindromeCheckerApp {
+
+    // Reverse linked list
+    static Node reverse(Node head) {
+        Node prev = null;
+        Node curr = head;
+
+        while (curr != null) {
+            Node nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+
+        return prev;
+    }
+
     public static void main(String[] args) {
 
         System.out.println("Welcome to Palindrome Checker App");
@@ -12,25 +36,43 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        // Clean input
         String cleaned = input.replaceAll("\\s+", "").toLowerCase();
 
-        // Create Deque
-        Deque<Character> deque = new ArrayDeque<>();
+        // Create linked list
+        Node head = null, tail = null;
 
-        // Insert characters
-        for (int i = 0; i < cleaned.length(); i++) {
-            deque.add(cleaned.charAt(i));
+        for (char ch : cleaned.toCharArray()) {
+            Node newNode = new Node(ch);
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
         }
 
+        // Find middle (fast & slow pointer)
+        Node slow = head, fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse second half
+        Node secondHalf = reverse(slow);
+
+        // Compare halves
+        Node firstHalf = head;
         boolean isPalindrome = true;
 
-        // Compare front and rear
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) {
+        while (secondHalf != null) {
+            if (firstHalf.data != secondHalf.data) {
                 isPalindrome = false;
                 break;
             }
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
         }
 
         // Result
