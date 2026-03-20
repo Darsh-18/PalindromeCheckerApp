@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
@@ -11,26 +13,32 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        // Clean input (same as UC4)
+        // Clean input
         String cleaned = input.replaceAll("\\s+", "").toLowerCase();
 
-        // 🔥 STACK LOGIC
+        // Create Stack & Queue
         Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
 
-        // Push characters
+        // Fill both
         for (int i = 0; i < cleaned.length(); i++) {
-            stack.push(cleaned.charAt(i));
+            char ch = cleaned.charAt(i);
+            stack.push(ch);
+            queue.add(ch);
         }
 
-        // Pop and build reversed string
-        String reversed = "";
-
-        while (!stack.isEmpty()) {
-            reversed += stack.pop();
-        }
+        boolean isPalindrome = true;
 
         // Compare
-        if (cleaned.equals(reversed)) {
+        while (!stack.isEmpty()) {
+            if (stack.pop() != queue.remove()) {
+                isPalindrome = false;
+                break;
+            }
+        }
+
+        // Result
+        if (isPalindrome) {
             System.out.println(input + " is a Palindrome");
         } else {
             System.out.println(input + " is NOT a Palindrome");
