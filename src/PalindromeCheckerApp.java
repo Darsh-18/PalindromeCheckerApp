@@ -2,19 +2,6 @@ import java.util.Scanner;
 
 public class PalindromeCheckerApp {
 
-    // Recursive function
-    static boolean isPalindrome(String str, int start, int end) {
-        if (start >= end) {
-            return true; // Base condition
-        }
-
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
-
-        return isPalindrome(str, start + 1, end - 1);
-    }
-
     public static void main(String[] args) {
 
         System.out.println("Welcome to Palindrome Checker App");
@@ -24,12 +11,26 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        // Clean input
+        // 🔥 NORMALIZATION (MAIN PART)
         String cleaned = input.replaceAll("\\s+", "").toLowerCase();
 
-        boolean result = isPalindrome(cleaned, 0, cleaned.length() - 1);
+        // Check palindrome using simple loop
+        boolean isPalindrome = true;
 
-        if (result) {
+        int start = 0;
+        int end = cleaned.length() - 1;
+
+        while (start < end) {
+            if (cleaned.charAt(start) != cleaned.charAt(end)) {
+                isPalindrome = false;
+                break;
+            }
+            start++;
+            end--;
+        }
+
+        // Result
+        if (isPalindrome) {
             System.out.println(input + " is a Palindrome");
         } else {
             System.out.println(input + " is NOT a Palindrome");
