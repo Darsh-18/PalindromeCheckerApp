@@ -10,13 +10,16 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
+        // 🔥 IMPORTANT PART
+        String cleaned = input.replaceAll("\\s+", "").toLowerCase();
+
         String reversed = "";
 
-        for (int i = input.length() - 1; i >= 0; i--) {
-            reversed += input.charAt(i);
+        for (int i = cleaned.length() - 1; i >= 0; i--) {
+            reversed += cleaned.charAt(i);
         }
 
-        if (input.equals(reversed)) {
+        if (cleaned.equals(reversed)) {
             System.out.println(input + " is a Palindrome");
         } else {
             System.out.println(input + " is NOT a Palindrome");
